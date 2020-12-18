@@ -35,6 +35,7 @@
 #include "mscore.h"
 #include "stafftype.h"
 #include "sym.h"
+#include "instrtemplate.h"
 
 #include "mscore/preferences.h"
 
@@ -852,6 +853,16 @@ Score::FileError MasterScore::loadCompressedMsc(QIODevice* io, bool ignoreVersio
                         }
                   }
             }
+
+      if (instrumentGroups.isEmpty()) {
+            QString tmplPath = preferences.getString(PREF_APP_PATHS_INSTRUMENTLIST1);
+
+            if (tmplPath.isEmpty())
+                  tmplPath = preferences.getString(PREF_APP_PATHS_INSTRUMENTLIST2);
+
+            loadInstrumentTemplates(tmplPath);
+            }
+
       XmlReader e(dbuf);
       e.setDocName(masterScore()->fileInfo()->completeBaseName());
 
